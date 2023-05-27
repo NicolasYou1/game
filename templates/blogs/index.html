@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+{% block content %}
+
+    <div class="title-container">
+        <h1>Bullet Heaven Game!</h1>
+    </div>
+    <canvas width="1200" height="600"></canvas>
+    <div class="blog-items-container">
+        {% for blog_post in blog_posts %}
+
+        <div class="blog-item-container">
+            <div class="blog-item-header">
+
+                <div class="blog-header-right">
+                    <h3>{{ blog_post }}</h3>
+                    <p class="blog-timestamp">{{ blog_post.date_added }}</p>
+                </div>
+
+                {% if request.user == blog_post.owner or user.is_superuser %}
+                    <div class="blog-header-left">
+                            <a href="{% url 'blogs:edit_blog' blog_post.id %}"><i class="fas fa-pencil-alt edit"></i></a>
+                            <a href="{% url 'blogs:delete_blog' blog_post.id %}"><i class="fas fa-trash delete"></i></a>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="blog-item-text">
+                {{ blog_post.text }}
+            </div>
+            
+        </div>
+        <div class="empty">
+            <h3 class="center-text">Comment down below what do you think about the game!</h3>
+        </div>
+        {% endfor %}
+
+    </div>
+    <div class="blog-items-footer">
+        <a href="{% url 'blogs:new_blog' %}" class="btn">Comment</a>
+    </div>
+
+{% endblock content %}
